@@ -1,14 +1,16 @@
 "use client";
 import { useState } from "react";
-import { Home, Car, Wind, Building2, Wallet, Settings } from "lucide-react";
+import { Home, Car, Wind, Building2, Wallet, Settings, Globe } from "lucide-react";
 import HomeTab from "./components/tabs/HomeTab";
 import SolarSkinTab from "./components/tabs/SolarSkinTab";
 import SkyDeliverTab from "./components/tabs/SkyDeliverTab";
 import EcoHomeTab from "./components/tabs/EcoHomeTab";
 import EcoWalletTab from "./components/tabs/EcoWalletTab";
 import SettingsTab from "./components/tabs/SettingsTab";
+import EcoLoopOverviewTab from "./components/tabs/EcoLoopOverviewTab";
 
 const tabs = [
+  { key: "overview", label: "Overview", icon: Globe, component: EcoLoopOverviewTab },
   { key: "home", label: "Home", icon: Home, component: HomeTab },
   { key: "solar", label: "SolarSkin", icon: Car, component: SolarSkinTab },
   { key: "sky", label: "SkyDeliver", icon: Wind, component: SkyDeliverTab },
@@ -18,6 +20,7 @@ const tabs = [
 ];
 
 const tabColors: Record<string, string> = {
+  overview: "#4ade80",
   home: "#4ade80",
   solar: "#60a5fa",
   sky: "#22d3ee",
@@ -27,7 +30,7 @@ const tabColors: Record<string, string> = {
 };
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState("home");
+  const [activeTab, setActiveTab] = useState("overview");
   const active = tabs.find((t) => t.key === activeTab)!;
   const ActiveComponent = active.component;
 
@@ -56,7 +59,7 @@ export default function App() {
         className="tab-bar fixed bottom-0 left-0 right-0 z-50"
         style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
-        <div className="flex">
+        <div className="flex overflow-x-auto scrollbar-none" style={{ scrollbarWidth: "none" }}>
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.key;
@@ -65,7 +68,8 @@ export default function App() {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className="flex-1 flex flex-col items-center py-2 px-1 transition-all duration-200 active:scale-95"
+                className="flex-shrink-0 flex flex-col items-center py-2 px-2 transition-all duration-200 active:scale-95"
+                style={{ minWidth: 56 }}
               >
                 <div
                   className={`w-8 h-8 rounded-xl flex items-center justify-center mb-0.5 transition-all duration-200 ${isActive ? "scale-110" : "scale-100"}`}
